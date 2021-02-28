@@ -91,7 +91,7 @@ class _ChangeRepManualSheetState extends State<ChangeRepManualSheet> {
         .registerTo<AuthenticatedEvent>()
         .listen((event) {
       if (event.authType == AUTH_EVENT_TYPE.CHANGE_MANUAL) {
-        doChange();
+        doChange(context);
       }
     });
   }
@@ -371,7 +371,7 @@ class _ChangeRepManualSheetState extends State<ChangeRepManualSheet> {
       );
   }
 
-  Future<void> doChange() async {
+  Future<void> doChange(BuildContext context) async {
     _animationOpen = true;
     Navigator.of(context).push(
         AnimationLoadingOverlay(
@@ -398,7 +398,7 @@ class _ChangeRepManualSheetState extends State<ChangeRepManualSheet> {
             _repController.text,
             StateContainer.of(context).wallet.frontier,
             StateContainer.of(context).wallet.accountBalance.toString(),
-            NanoUtil.seedToPrivate(await sl.get<Vault>().getSeed(), StateContainer.of(context).selectedAccount.index)
+            NanoUtil.seedToPrivate(await StateContainer.of(context).getSeed(), StateContainer.of(context).selectedAccount.index)
           );
           StateContainer.of(context).wallet.representative = _repController.text;
           StateContainer.of(context).wallet.frontier = resp.hash;
